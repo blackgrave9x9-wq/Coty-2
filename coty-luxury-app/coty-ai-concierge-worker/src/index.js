@@ -2,7 +2,7 @@ export default {
   async fetch(request, env, ctx) {
     // CORS Headers: Tunaruhusu website yako ya Pages kuwasiliana na Worker
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://37075584.lyra-luxury.pages.dev",
+      "Access-Control-Allow-Origin": "https://cotycostumerservice.blackgrave9x9.workers.dev/",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
