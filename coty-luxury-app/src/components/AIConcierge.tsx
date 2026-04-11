@@ -127,7 +127,7 @@ export default function AIConcierge({ user, lang, onAddToCart, onShowRegistratio
         }
       ];
 
-      const response = await fetch('https://YAKO-WORKER-URL.workers.dev', {
+      const response = await fetch('cotycostumerservice.blackgrave9x9.workers.dev', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
