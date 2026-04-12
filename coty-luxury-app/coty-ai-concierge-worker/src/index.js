@@ -1,33 +1,38 @@
 export default {
-  async fetch(request, env, ctx) {
-    // CORS Headers: Tunaruhusu website yako ya Pages kuwasiliana na Worker
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    };
+    async fetch(request, env) {
+        const corsHeaders = {
+              "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                          "Access-Control-Allow-Headers": "Content-Type",
+                              };
 
-    // Kushughulikia "Preflight" request (OPTIONS)
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
-    }
+                                  if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-    try {
-      // Hapa ndipo kodi yako ya Gemini inapoanza
-      const { messages, tools } = await request.json();
-      const apiKey = env.GEMINI_API_KEY;
+                                      try {
+                                            const { messages } = await request.json();
+                                                  const apiKey = env.GEMINI_API_KEY;
 
-      // ... (Hapa weka kodi yako ya kupiga Gemini API) ...
+                                                        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
+                                                                method: 'POST',
+                                                                        headers: { 'Content-Type': 'application/json' },
+                                                                                body: JSON.stringify({
+                                                                                          contents: messages.map(m => ({ 
+                                                                                                      role: m.role === 'assistant' ? 'model' : 'user', 
+                                                                                                                  parts: [{ text: m.content }] 
+                                                                                                                            }))
+                                                                                                                                    })
+                                                                                                                                          });
 
-      // Mfano wa Response (Hakikisha unaongeza corsHeaders kwenye response yako)
-      return new Response(JSON.stringify({ /* data zako */ }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    } catch (e) {
-      return new Response(JSON.stringify({ error: e.message }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-  }
+                                                                                                                                                const data = await response.json();
+                                                                                                                                                      return new Response(JSON.stringify(data), {
+                                                                                                                                                              headers: { ...corsHeaders, "Content-Type": "application/json" },
+                                                                                                                                                                    });
+                                                                                                                                                                        } catch (e) {
+                                                                                                                                                                              return new Response(JSON.stringify({ error: e.message }), {
+                                                                                                                                                                                      status: 500,
+                                                                                                                                                                                              headers: { ...corsHeaders, "Content-Type": "application/json" },
+                                                                                                                                                                                                    });
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                          }
 }
