@@ -1,6 +1,6 @@
 // src/components/AIConcierge.tsx
 import React, { useState, useEffect } from 'react';
-import { doc, onSnapshot, setDoc, updateDoc, collection, getDocs, writeBatch } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import ReactMarkdown from 'react-markdown';
 import { t } from '../i18n';
@@ -11,17 +11,9 @@ interface Message {
 }
 
 export default function AIConcierge({ user, products, lang }: { user: any, products: any[], lang: string }) {
-  const [messages, setMessages] = useState<Message[]>([{ role: 'assistant', content: lang === 'sw' ? "Habari! Mimi ni LYRA, msaidizi wako wa Coty butchery. Nikupe nini leo?" : "Hi! I'm LYRA, your Coty  AI Assistant. What can I help you with today?" }]);
+  const [messages, setMessages] = useState<Message[]>([{ role: 'assistant', content: lang === 'sw' ? "Habari! Mimi ni LYRA, msaidizi wako wa Coty Luxury. Nikupe nini leo?" : "Hi! I'm LYRA, your Coty Luxury AI Assistant. What can I help you with today?" }]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [settings, setSettings] = useState<any>({});
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, 'settings', 'site'), (snapshot) => {
-      if (snapshot.exists()) setSettings(snapshot.data());
-    });
-    return () => unsubscribe();
-  }, []);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -31,9 +23,9 @@ export default function AIConcierge({ user, products, lang }: { user: any, produ
     setIsLoading(true);
 
     try {
-      const systemPrompt = `You are "LYRA", the Coty butchery and coty african market AI Assistant. ALWAYS use Swahili.`;
+      const systemPrompt = `You are "LYRA", the Coty Luxury AI Assistant. ALWAYS use Swahili.`;
 
-      // HII NDIO URL YAKO HALISI
+      // HII NDIO URL YAKO HALISI - HAKUNA PLACEHOLDER TENA
       const response = await fetch('https://cotycostumerservice.blackgrave9x9.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
