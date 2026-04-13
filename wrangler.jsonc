@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cotycostumerservice",
+  "compatibility_date": "2026-04-13",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "coty-luxury-app"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
